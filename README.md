@@ -1,7 +1,6 @@
 # InsectAI Example Datasets: Camtrap DP and Derived Metadata Standards
 
 <img src="logos/insectAI.svg" alt="InsectAI Logo" width="300"/>
-<img src="logos/tdwg-logo-short.svg" alt="CamtrapDP Logo" width="325"/>
 
 ---
 
