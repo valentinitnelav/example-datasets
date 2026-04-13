@@ -25,7 +25,7 @@ Each individual dataset is located in a folder named `<DATASET_NAME>` with the f
 | :--- | :--- |
 | `media/` | Folder containing all images, potentially organized into subdirectories. |
 | `raw_labels/` | The original annotations in their source format (JSON, CSV, TXT, etc.). |
-| `main.ipynb` | The conversion script (Jupyter, R, etc.) used to map raw labels to the standard. |
+| `main.ipynb` | The conversion script (Jupyter, R, etc.) used to convert the dataset in raw format to the Camtrap DP standard. |
 | `deployments.csv` | **Generated:** Records of camera/sensor deployments. |
 | `media.csv` | **Generated:** Metadata for all media files. |
 | `observations.csv`| **Generated:** Taxonomic or individual observations. |
