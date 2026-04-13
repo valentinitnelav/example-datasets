@@ -1,4 +1,4 @@
-# InsectAI Example Datasets: Camtrap DP and Derived Metadata Standards
+# InsectAI Example Datasets and Standards Development
 
 <img src="logos/insectAI.svg" alt="InsectAI Logo" width="300"/>
 
@@ -18,7 +18,13 @@ Along the way, we reflect on and develop Camtrap DP and InsectAI data standards,
 
 We will prove to ourselves (and the world!) that we can store our data in a common format, laying foundations for future collaborations and insect image megadatasets 💾
 
-# Outcomes of the datathon, found here in the repo:
+# InsectAI data challenges
+
+The "minidatasets" presented here demonstrate one or more of the common challenges of InsectAI data:
+
+-
+
+# Outcomes of the datathon
 
 - Several example standardized datasets to browse and learn from under `datasets/`
 - Refined InsectAI/Camtrap DP standards (including github issues to petition the Camtrap DP team), feeding into the InsectAI WG3 report
