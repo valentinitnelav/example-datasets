@@ -1,0 +1,15 @@
+[
+	{
+		"project_identifier" : "Lepmon",
+		"project_title" : "Lepmon Habitat Pro Programm",
+		"project_description" : "Alle KLF Pro Fallen, die zur Habitat Erkundung eingesetzt werden|Baden-Württemberg||SMNK E-Lep|KLF am Kaltenberg bei Berghausen, Lkr Karlsruhe",
+		"project_contributor" : "Paul Bodesheim; Dennis Böttger; Christian Bräunig; Gunnar Brehm; Peter Grobe",
+		"min_lon" : 8.5151100,
+		"min_lat" : 48.9939800,
+		"max_lon" : 8.5151100,
+		"max_lat" : 48.9939800,
+		"min_time" : "2025-08-16 20:11:00.000",
+		"max_time" : "2025-08-17 06:49:00.000",
+		"project_taxa" : "Lepidoptera"
+	}
+]

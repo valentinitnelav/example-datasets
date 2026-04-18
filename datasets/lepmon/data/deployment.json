@@ -1,0 +1,18 @@
+[
+	{
+		"deployment_id" : "TH-J-4839",
+		"longitude" : 8.5151100,
+		"latitude" : 48.9939800,
+		"locationName" : "Gewann Kaltenberg, Berghausen-Pfinztal, Karlsruhe",
+		"deployment_start" : null,
+		"deployment_end" : null,
+		"cameraID" : "SN010019",
+		"cameraModel" : null,
+		"cameraVersion" : null,
+		"detectionDistance" : null,
+		"baitUse" : null,
+		"baitType" : null,
+		"firmwareVersion" : null,
+		"firmwareDate" : null
+	}
+]
