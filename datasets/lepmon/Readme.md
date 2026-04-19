@@ -12,16 +12,16 @@ The folder `media` contains the raw data as they are uploaded from the camera: o
  - Lepmon#SN010030_TH_J_2025-07-02_T_2102_Kameraeinstellungen: Camera settings
 
 
-## Raw labels folder contents
+## Data folder contents
 
-**Work in Progress**
+Alle files for the different tables in json and csv format:
+- meatadata
+- deployment
+- media
+- detections
+- model
 
-The processed files (`raw_labels`) is a csv file in the following structure:
-- Links to cropped image in iiif-format. 
-- AI prediction with GBIF-ID
-- AI localisation flag moth/non moth
-- Track number and the amount of cropped images coantining the same organism
-- Human generated taxonomic assignment
-- Flag by an expert confirming the identification
-- Timestamp of identification
-- Name and version of the AI model used for prediction
+## Open questions
+
+- Link to bbox url if present missing?
+- What about measurement values taken with each image, e.g. temperature, light conditions, etc.? 
