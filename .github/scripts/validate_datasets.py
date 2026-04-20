@@ -165,6 +165,20 @@ def check_datapackage(dataset_path : Path) -> list[RuleReturn]:
         message='Dataset specification file "datapackage.json" passed `frictionless` validation.'
     )]
 
+def extract_readme_image(dataset_path: Path) -> str | None:
+    """Extracts the image path from the first line of the README if formatted correctly."""
+    readme_path = dataset_path / "README.md"
+    if not readme_path.exists():
+        return None
+    try:
+        with open(readme_path, "r", encoding="utf-8") as f:
+            first_line = f.readline().strip()
+            if first_line.startswith(""):
+                return first_line[11:-3].strip()
+    except Exception:
+        pass
+    return None
+
 # ==========================================
 # 🚀 CORE EXECUTION LOGIC   
 # ==========================================
@@ -188,7 +202,10 @@ def check(datasets_dir: str):
             for rrt in result:
                 items.append(rrt.to_dict())
 
-        checks[dataset_path.name] = items
+        checks[dataset_path.name] = {
+            "image": extract_readme_image(dataset_path),
+            "checks": items
+        }
             
     return checks
 
@@ -204,7 +221,7 @@ def main():
         print(f"⚠️  Warning: Directory '{args.dir}' not found.", file=sys.stderr)
         sys.exit(1)
 
-    has_failures = any(not item["status"] for items in checks.values() for item in items)
+    has_failures = any(not item.get("status", None) for item in checks.get("checks", checks).values())
 
     if args.format == "json":
         print(json.dumps(checks))

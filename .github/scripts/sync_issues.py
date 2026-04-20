@@ -170,6 +170,10 @@ def main():
             return
         data = json.loads(results_json)
 
+    for k, v in data.items():
+        if isinstance(v, list):
+            data[k] = {"image": None, "checks": v}
+
     if args.mode == "pr":
         handle_pr(data, args.dry_run)
     else:
