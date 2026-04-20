@@ -228,8 +228,8 @@ def handle_readme(data, dry_run):
     end_marker = "<!-- END: DATASET PROGRESS TABLE -->"
     
     if start_marker in content and end_marker in content:
-        pre_table = content.split(start_marker)[0]
-        post_table = content.split(end_marker)[1]
+        pre_table = content.split(start_marker)[0].rstrip()
+        post_table = content.split(end_marker)[1].lstrip()
         content = "\n".join([
                 pre_table,
                 start_marker,

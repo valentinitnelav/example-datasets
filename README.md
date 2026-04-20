@@ -12,12 +12,6 @@
 
 ## 📁 Example Dataset Progress
 
-
-
-
-
-
-
 <!-- START: DATASET PROGRESS TABLE -->
 <!-- Do NOT manually edit! -->
 
@@ -37,16 +31,6 @@
 
 <!-- Last updated: 2026-04-20 22:29:31 UTC -->
 <!-- END: DATASET PROGRESS TABLE -->
-
-
-
-
-
-
-
-
-
-
 
 ---
 
