@@ -2,11 +2,13 @@
 
 Subset of dataset from https://doi.org/10.5281/zenodo.15096610
 
+See more details in that readme file on the Zenodo repository about data and metadata.
+
 ## File layout
 
-- `raw/`                       full-frame smartphone images, one per acquisition
-- `cropped/`                   ROI-cropped images around the target flower
-- `backgrounds/`               frames without flower visitors
+- `raw/`                       full-frame smartphone images
+- `cropped/`                   ROI-cropped images around the target flower (ROI: target flower / part of inflorescence)
+- `backgrounds/`               frames without flower visitors (negative images)
 - `annotations_subset.tsv`     subset of annotations_full_frames.txt
 
 ## Scope
@@ -30,35 +32,25 @@ diptera        10
 araneae         3
 ```
 
-## Deepest populated taxonomic rank per detection
+## Deepest populated taxonomic rank per instance (bounding box)
 
 ```
 deepest_rank
-species          6
+order            3
 family           6
+clustergenera    3
 genus            4
 morphospecies    3
-order            3
-clustergenera    3
-```
-
-## Deepest rank by order (the rank heterogeneity story)
-
-```
-deepest_rank  clustergenera  family  genus  morphospecies  order  species
-order                                                                    
-araneae                   0       0      0              0      3        0
-diptera                   3       0      1              0      0        6
-hymenoptera               0       6      3              3      0        0
+species          6
 ```
 
 ## What this subset is designed to stress-test
 
-1. Mixed taxonomic rank. Bees and flies are identified to fine ranks (genus, species, morphospecies, clustergenera); other orders to order only.
-2. Sequence structure. `seq_id` groups multiple frames of the same individual, so the "what counts as an event" question is visible in the data.
-3. Confidence levels. Columns `conf_order`, `conf_family`, `conf_species`, etc. record human annotator confidence and are preserved in the subset.
-4. Multi-insect frames. At least one frame has `n_boxes >= 2`.
-5. Multiple deployments. 3 plant_folders on different plant species.
+- Mixed taxonomic rank. Bees (Hymenoptera) and flies (Diptera) are identified to the finest rank possible; other orders to order only.
+- Sequence structure. `seq_id` groups multiple frames of the same individual, so the "what counts as an event" question from CameraDP standards needs to be doubled check on how it applies here. A bounding box within an image is an "isntance" of that individual insect.
+- Confidence levels. Columns `conf_order`, `conf_family`, `conf_species`, etc. record human annotator confidence.
+- Multi-insect frames. At least one frame has `n_boxes >= 2` (2 arthopod instances)
+- Multiple deployments. 3 `plant_folders` on different plant species.
 
 ## Original dataset
 
