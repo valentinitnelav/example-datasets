@@ -53,11 +53,11 @@ def generate_overview_table(data: dict) -> str:
     """Generates a high-level summary table of all datasets and their statuses."""
     em_space = "&emsp;"
     lines = [
-        f'| <br>**Dataset**<br> {em_space*15} | <br>**Status**<br>{em_space*9} | <br>**Example Image**<br>{em_space*25} |',
+        f'| <br>**Dataset**<br> {em_space*15} | <br>**Status**<br>{em_space*9} | <br>**Example Image**<br>{em_space*24} |',
         '| ---: | :---: | :---: |'
     ]
     
-    for ds_name, ds_info in data.items():
+    for ds_name, ds_info in sorted(data.items(), key=lambda kv : kv[0]):
         checks = [RuleReturn(**c) for c in ds_info.get("checks", [])]
         
         n_chk = len(checks)
