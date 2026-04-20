@@ -36,19 +36,24 @@ def rule_check_table(checks : list[RuleReturn]) -> str:
     return "\n".join([header, hline, *rows])
 
 def get_issue_number(title):
-    """Uses gh cli to find an open issue by title and returns its number."""
+    """Fetches open issues and strictly matches the title in Python to avoid gh search syntax bugs."""
     cmd = [
         "gh", "issue", "list", 
-        "--search", f'"{title} in:title"',
         "--state", "open", 
-        "--json", "number", 
-        "--jq", ".[0].number"
+        "--limit", "10000",
+        "--json", "title,number"
     ]
     result = subprocess.run(cmd, capture_output=True, text=True)
-    return result.stdout.strip()
+    
+    if result.stdout.strip():
+        issues = json.loads(result.stdout)
+        for issue in issues:
+            if issue.get("title") == title:
+                return str(issue.get("number"))
+    return ""
 
 def handle_issues(data, dry_run):
-    """Handles creating or closing GitHub issues based on dataset violations."""
+    """Handles creating or updating GitHub issues based on dataset violations."""
     for ds_name, checks_data in data.items():
         title = f"[Dataset Standard Violation] {ds_name}"
         issue_number = get_issue_number(title) if not dry_run else f'LOCAL[{ds_name}]'
@@ -111,7 +116,6 @@ def handle_pr(data, dry_run):
         print(f"PR_NUMBER: {pr_number}\nBODY:\n{full_body}")
     else:
         print(f"Commenting on PR #{pr_number}")
-        # Write to file to handle multi-line bodies gracefully in bash
         with open("pr_comment_body.md", "w") as f:
             f.write(full_body)
         subprocess.run(["gh", "pr", "comment", pr_number, "--body-file", "pr_comment_body.md"], check=True)
