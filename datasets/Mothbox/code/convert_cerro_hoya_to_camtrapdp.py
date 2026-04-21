@@ -24,6 +24,9 @@ MEDIA_TEMPLATE = ROOT / "media_template.csv"
 OBSERVATIONS_TEMPLATE = ROOT / "observations_template.csv"
 
 TZ_OFFSET = "-05:00"  # America/Panama
+IMAGE_WIDTH = 9248.0
+IMAGE_HEIGHT = 6944.0
+METADATA_FILENAME = "mothbot_metadata.csv"
 
 
 @dataclass
@@ -52,6 +55,13 @@ def ensure_clean_dirs() -> None:
     CODE_DIR.mkdir(parents=True, exist_ok=True)
 
 
+def resolve_metadata_path() -> Path:
+    raw_meta = RAW_DIR / METADATA_FILENAME
+    if raw_meta.exists():
+        return raw_meta
+    return SOURCE_DIR / METADATA_FILENAME
+
+
 def copy_partitioned_files() -> Tuple[List[Path], List[Path]]:
     copied_media: List[Path] = []
     copied_json: List[Path] = []
@@ -78,8 +88,10 @@ def copy_partitioned_files() -> Tuple[List[Path], List[Path]]:
         shutil.rmtree(dst_exports)
     shutil.copytree(src_exports, dst_exports)
 
-    src_meta = SOURCE_DIR / "metadata_old_format.csv"
-    shutil.copy2(src_meta, RAW_DIR / "metadata_old_format.csv")
+    src_meta = SOURCE_DIR / METADATA_FILENAME
+    dst_meta = RAW_DIR / METADATA_FILENAME
+    if src_meta.exists():
+        shutil.copy2(src_meta, dst_meta)
     return copied_media, copied_json
 
 
@@ -117,7 +129,7 @@ def detect_lat_lon(row: List[str], header: List[str], site_value: str) -> Tuple[
 
 
 def parse_metadata() -> Dict[str, MetadataRecord]:
-    path = SOURCE_DIR / "metadata_old_format.csv"
+    path = resolve_metadata_path()
     records: Dict[str, MetadataRecord] = {}
     with path.open("r", encoding="utf-8", newline="") as handle:
         reader = csv.reader(handle)
@@ -128,7 +140,7 @@ def parse_metadata() -> Dict[str, MetadataRecord]:
             values = {header[i]: (row[i].strip() if i < len(row) else "") for i in range(len(header))}
             dep_name = values.get("deployment_name", "")
             site = values.get("site", "")
-            device = values.get("device", "")
+            device = values.get("device_name", "") or values.get("device", "")
             dep_date = parse_date_ddmmyy(values.get("deployment_date", ""))
             coll_date = parse_date_ddmmyy(values.get("collect_date", ""))
             latitude, longitude = detect_lat_lon(row, header, site)
@@ -192,8 +204,8 @@ def load_bbox_index() -> Dict[str, Dict[str, str]]:
             bbox[patch_name] = {
                 "bboxX": f"{min_x:.3f}",
                 "bboxY": f"{min_y:.3f}",
-                "bboxWidth": f"{width:.3f}",
-                "bboxHeight": f"{height:.3f}",
+                "bboxWidth": f"{(width / IMAGE_WIDTH):.6f}",
+                "bboxHeight": f"{(height / IMAGE_HEIGHT):.6f}",
             }
     return bbox
 
@@ -232,7 +244,7 @@ def create_readme() -> None:
                 "This dataset was generated from `Cerro_Hoya_Expedition` using a Python conversion script.",
                 "",
                 "- `media/`: patch JPG files only (original source images intentionally excluded).",
-                "- `raw-data/`: source JSON files, exports, and metadata_old_format.csv.",
+                "- `raw-data/`: source JSON files, exports, and mothbot_metadata.csv.",
                 "- Camtrap-style outputs: `deployments.csv`, `media.csv`, `observations.csv`, `unaccountedfor.csv`, `datapackage.json`.",
             ]
         ),
@@ -315,7 +327,6 @@ def main() -> None:
         "identifiedBy",
         "image_id",
     }
-
     for export_file in export_files:
         with export_file.open("r", encoding="utf-8", newline="") as handle:
             reader = csv.DictReader(handle)
@@ -325,6 +336,9 @@ def main() -> None:
 
                 deployment_id = md.deployment_name if md else fallback_id("deployment", export_deployment)
                 if deployment_id not in deployments_rows:
+                    camera_model = (md.values.get("device", "") if md else "")
+                    if not camera_model and md:
+                        camera_model = md.values.get("device_name", "")
                     deployments_rows[deployment_id] = {
                         "deploymentID": deployment_id,
                         "locationID": (md.site if md else ""),
@@ -336,29 +350,44 @@ def main() -> None:
                         "deploymentEnd": (iso_from_date(md.collect_date, end_of_day=True) if md else ""),
                         "setupBy": "",
                         "cameraID": (md.device if md else ""),
-                        "cameraModel": "",
+                        "cameraModel": camera_model,
                         "cameraDelay": "",
-                        "cameraHeight": "",
+                        "cameraHeight": ((md.values.get("height_above_ground", "") if md else "")),
                         "cameraDepth": "",
                         "cameraTilt": "",
                         "cameraHeading": "",
                         "detectionDistance": "",
                         "timestampIssues": "",
-                        "baitUse": "",
+                        "baitUse": "true",
                         "featureType": "",
-                        "habitat": "",
+                        "habitat": ((md.values.get("habitat", "") if md else "")),
                         "deploymentGroups": "",
                         "deploymentTags": "",
-                        "deploymentComments": "",
+                        "deploymentComments": ((md.values.get("notes", "") if md else "")),
                     }
                     if md:
-                        mapped_metadata = {"deployment_name", "site", "device", "deployment_date", "collect_date", "latitude", "longitude"}
+                        deployments_rows[deployment_id]["setupBy"] = md.values.get("crew", "")
+                    if md:
+                        mapped_metadata = {
+                            "deployment_name",
+                            "site",
+                            "device_name",
+                            "device",
+                            "deployment_date",
+                            "collect_date",
+                            "latitude",
+                            "longitude",
+                            "height_above_ground",
+                            "habitat",
+                            "notes",
+                            "crew",
+                        }
                         for field, value in md.values.items():
                             if field in mapped_metadata or not (value or "").strip():
                                 continue
                             unaccounted_rows.append(
                                 {
-                                    "source_file": "metadata_old_format.csv",
+                                    "source_file": METADATA_FILENAME,
                                     "source_row": deployment_id,
                                     "source_field": field,
                                     "source_value": value,
@@ -376,7 +405,7 @@ def main() -> None:
                 media_rows[media_id] = {
                     "mediaID": media_id,
                     "deploymentID": deployment_id,
-                    "captureMethod": "",
+                    "captureMethod": "timeLapse",
                     "timestamp": parse_patch_timestamp(patch_name),
                     "filePath": rel_media_path,
                     "filePublic": "",
@@ -390,6 +419,19 @@ def main() -> None:
                 identified_by = (row.get("identifiedBy") or "").strip()
                 method = "machine" if identified_by.lower() == "mothbot" else "human"
                 bbox = bbox_index.get(Path(patch_name).name, {})
+                export_w = (row.get("width") or "").strip()
+                export_h = (row.get("height") or "").strip()
+                fallback_bw = ""
+                fallback_bh = ""
+                if not bbox and export_w and export_h:
+                    try:
+                        fallback_bw = f"{(float(export_w) / IMAGE_WIDTH):.6f}"
+                        fallback_bh = f"{(float(export_h) / IMAGE_HEIGHT):.6f}"
+                    except ValueError:
+                        fallback_bw = ""
+                        fallback_bh = ""
+                fallback_bx = ""
+                fallback_by = ""
                 obs_id = (row.get("occurrenceID") or "").strip() or fallback_id(
                     "obs", media_id, row.get("scientificName", ""), row.get("eventID", "")
                 )
@@ -413,10 +455,10 @@ def main() -> None:
                         "individualPositionRadius": "",
                         "individualPositionAngle": "",
                         "individualSpeed": "",
-                        "bboxX": bbox.get("bboxX", ""),
-                        "bboxY": bbox.get("bboxY", ""),
-                        "bboxWidth": bbox.get("bboxWidth", ""),
-                        "bboxHeight": bbox.get("bboxHeight", ""),
+                        "bboxX": bbox.get("bboxX", fallback_bx),
+                        "bboxY": bbox.get("bboxY", fallback_by),
+                        "bboxWidth": bbox.get("bboxWidth", fallback_bw),
+                        "bboxHeight": bbox.get("bboxHeight", fallback_bh),
                         "classificationMethod": method,
                         "classifiedBy": identified_by,
                         "classificationTimestamp": (row.get("classificationTimestamp") or "").strip(),
