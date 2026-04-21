@@ -1,7 +1,7 @@
 {
-  "profile": "camtrap-dp",
+  "profile": "https://raw.githubusercontent.com/tdwg/camtrap-dp/1.0.2/camtrap-dp-profile.json",
   "name": "mothbox-cerro-hoya",
-  "created": "2026-04-21T14:32:19Z",
+  "created": "2026-04-21T16:41:15Z",
   "licenses": [
     {
       "scope": "data",
@@ -55,6 +55,281 @@
         }
       },
       "count": 13738
+    }
+  ],
+  "taxonomic": [
+    {
+      "scientificName": "Agylla"
+    },
+    {
+      "scientificName": "Anarmodia"
+    },
+    {
+      "scientificName": "Antiblemma"
+    },
+    {
+      "scientificName": "Araneae"
+    },
+    {
+      "scientificName": "Archaeognatha"
+    },
+    {
+      "scientificName": "Argyria"
+    },
+    {
+      "scientificName": "Asturodes"
+    },
+    {
+      "scientificName": "Bostrichidae"
+    },
+    {
+      "scientificName": "Cantharidae"
+    },
+    {
+      "scientificName": "Carabidae"
+    },
+    {
+      "scientificName": "Cecharismena"
+    },
+    {
+      "scientificName": "Chrysomelidae"
+    },
+    {
+      "scientificName": "Coleoptera"
+    },
+    {
+      "scientificName": "Cosmopterosis"
+    },
+    {
+      "scientificName": "Crambidae"
+    },
+    {
+      "scientificName": "Curculionidae"
+    },
+    {
+      "scientificName": "Depressariidae"
+    },
+    {
+      "scientificName": "Dermaptera"
+    },
+    {
+      "scientificName": "Deuterollyta"
+    },
+    {
+      "scientificName": "Diabrotica"
+    },
+    {
+      "scientificName": "Diptera"
+    },
+    {
+      "scientificName": "Dytiscidae"
+    },
+    {
+      "scientificName": "Elateridae"
+    },
+    {
+      "scientificName": "Epimecis"
+    },
+    {
+      "scientificName": "Erebidae"
+    },
+    {
+      "scientificName": "Galasa"
+    },
+    {
+      "scientificName": "Geometridae"
+    },
+    {
+      "scientificName": "Hemiptera"
+    },
+    {
+      "scientificName": "Hymenomima"
+    },
+    {
+      "scientificName": "Hymenoptera"
+    },
+    {
+      "scientificName": "Idaea"
+    },
+    {
+      "scientificName": "Insecta"
+    },
+    {
+      "scientificName": "Lepidoptera"
+    },
+    {
+      "scientificName": "Macaria"
+    },
+    {
+      "scientificName": "Mantodea"
+    },
+    {
+      "scientificName": "Neuroptera"
+    },
+    {
+      "scientificName": "Nolidae"
+    },
+    {
+      "scientificName": "Oedemeridae"
+    },
+    {
+      "scientificName": "Orthocomotis"
+    },
+    {
+      "scientificName": "Orthoptera"
+    },
+    {
+      "scientificName": "Pelidnota"
+    },
+    {
+      "scientificName": "Phileurus"
+    },
+    {
+      "scientificName": "Platynota"
+    },
+    {
+      "scientificName": "Plecoptera"
+    },
+    {
+      "scientificName": "Psocodea"
+    },
+    {
+      "scientificName": "Ptichodis"
+    },
+    {
+      "scientificName": "Pyralidae"
+    },
+    {
+      "scientificName": "Rejectaria"
+    },
+    {
+      "scientificName": "Scarabaeidae"
+    },
+    {
+      "scientificName": "Silvanidae"
+    },
+    {
+      "scientificName": "Simena"
+    },
+    {
+      "scientificName": "Stenoma"
+    },
+    {
+      "scientificName": "Tenebrionidae"
+    },
+    {
+      "scientificName": "Tesserocerus"
+    },
+    {
+      "scientificName": "Toramus"
+    },
+    {
+      "scientificName": "Trichoptera"
+    },
+    {
+      "scientificName": "Trichromia"
+    },
+    {
+      "scientificName": "Trogossitidae"
+    },
+    {
+      "scientificName": "Uraniidae"
+    },
+    {
+      "scientificName": "Walterianella"
+    },
+    {
+      "scientificName": "amicalis"
+    },
+    {
+      "scientificName": "aurulentus"
+    },
+    {
+      "scientificName": "bractea"
+    },
+    {
+      "scientificName": "carbonifer"
+    },
+    {
+      "scientificName": "cinguliventris"
+    },
+    {
+      "scientificName": "consimilis"
+    },
+    {
+      "scientificName": "costata"
+    },
+    {
+      "scientificName": "dama"
+    },
+    {
+      "scientificName": "decolor"
+    },
+    {
+      "scientificName": "dohrni"
+    },
+    {
+      "scientificName": "glabrata"
+    },
+    {
+      "scientificName": "gripusalis"
+    },
+    {
+      "scientificName": "haemorrhoidalis"
+    },
+    {
+      "scientificName": "hinna"
+    },
+    {
+      "scientificName": "juncida"
+    },
+    {
+      "scientificName": "leucoplagalis"
+    },
+    {
+      "scientificName": "lunulata"
+    },
+    {
+      "scientificName": "melanocephala"
+    },
+    {
+      "scientificName": "memor"
+    },
+    {
+      "scientificName": "metallicus"
+    },
+    {
+      "scientificName": "munitalis"
+    },
+    {
+      "scientificName": "phaeella"
+    },
+    {
+      "scientificName": "pusillidactylus"
+    },
+    {
+      "scientificName": "rubedinaria"
+    },
+    {
+      "scientificName": "salaconalis"
+    },
+    {
+      "scientificName": "schausi"
+    },
+    {
+      "scientificName": "trichops"
+    },
+    {
+      "scientificName": "umbelularia"
+    },
+    {
+      "scientificName": "violescens"
+    },
+    {
+      "scientificName": "walkeri"
+    },
+    {
+      "scientificName": "xanthosticta"
     }
   ]
 }
