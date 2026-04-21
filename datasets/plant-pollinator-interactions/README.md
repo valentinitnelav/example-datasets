@@ -1,3 +1,5 @@
+<!-- Image: media/5mp_300521_10_18_30_696493.jpg -->
+
 # Plant-pollinator interactions — Balearic Islands
 
 <img src="media/5mp_300521_10_18_30_696493.jpg" alt="Plant-pollinator interactions example image" width="300"/>
