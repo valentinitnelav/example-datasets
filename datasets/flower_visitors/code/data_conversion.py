@@ -31,7 +31,7 @@ from PIL.ExifTags import TAGS
 # --------------------------------------------------------------------------
 DATASET_ROOT = Path("..")       # .../flower_visitors/
 REPO_ROOT = Path("../../..")    # .../example-datasets/
-ANNOTATIONS_TSV = DATASET_ROOT / "raw_data" / "annotations_subset.tsv"
+ANNOTATIONS_TSV = DATASET_ROOT / "raw-data" / "annotations_subset.tsv"
 MEDIA_RAW = DATASET_ROOT / "media" / "raw"
 MEDIA_BG = DATASET_ROOT / "media" / "backgrounds"
 # media/cropped/ is intentionally NOT ingested as media — it is a derived ROI
