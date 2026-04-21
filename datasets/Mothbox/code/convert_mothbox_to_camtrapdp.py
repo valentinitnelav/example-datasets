@@ -151,7 +151,8 @@ def parse_metadata() -> Dict[str, MetadataRecord]:
             dep_name = values.get("deployment_name", "")
             site = values.get("site", "")
             device = values.get("device_name", "") or values.get("device", "")
-            dep_date = parse_date_ddmmyy(values.get("deployment_date", ""))
+            # Metadata exports may use either deploy_date or deployment_date.
+            dep_date = parse_date_ddmmyy(values.get("deploy_date", "") or values.get("deployment_date", ""))
             coll_date = parse_date_ddmmyy(values.get("collect_date", ""))
             latitude, longitude = detect_lat_lon(row, header, site)
             dep_folder = "_".join(dep_name.split("_")[-4:]) if dep_name else ""
@@ -262,7 +263,12 @@ def create_readme() -> None:
     )
 
 
-def create_datapackage(row_counts: Dict[str, int]) -> None:
+def build_taxonomic_entries(scientific_names: Iterable[str]) -> List[Dict[str, str]]:
+    unique_names = sorted({name.strip() for name in scientific_names if name and name.strip()})
+    return [{"scientificName": name} for name in unique_names]
+
+
+def create_datapackage(row_counts: Dict[str, int], scientific_names: Iterable[str]) -> None:
     datapackage = {
         "profile": "https://raw.githubusercontent.com/tdwg/camtrap-dp/1.0.2/camtrap-dp-profile.json",
         "name": "mothbox-cerro-hoya",
@@ -305,6 +311,7 @@ def create_datapackage(row_counts: Dict[str, int]) -> None:
                 "count": row_counts.get("observations", 0),
             },
         ],
+        "taxonomic": build_taxonomic_entries(scientific_names),
     }
     (DATASET_DIR / "datapackage.json").write_text(json.dumps(datapackage, indent=2), encoding="utf-8")
 
@@ -517,7 +524,11 @@ def main() -> None:
         ["metadata", "export"],
         build_unaccountedfor_columns(deployments_columns, media_columns, observations_columns),
     )
-    create_datapackage({"deployments": deployments_count, "media": media_count, "observations": observations_count})
+    scientific_names = [row.get("scientificName", "") for row in observations_rows]
+    create_datapackage(
+        {"deployments": deployments_count, "media": media_count, "observations": observations_count},
+        scientific_names,
+    )
     create_readme()
     print(f"Wrote {deployments_count} deployments, {media_count} media, {observations_count} observations.")
 
